@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  ::selection { background: #2f7cff33; }
+}
+
+@layer components {
+  .container-app { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+  .input {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition
+      placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15;
+  }
+  .label { @apply mb-1.5 block text-sm font-medium text-slate-700; }
+  .text-gradient { @apply bg-gradient-to-r from-brand-400 via-sky-300 to-brand-200 bg-clip-text text-transparent; }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white !important; }
+}
