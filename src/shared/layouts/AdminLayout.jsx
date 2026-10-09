@@ -83,7 +83,7 @@ export default function AdminLayout() {
         <Sidebar />
       </aside>
       <div className="sticky top-0 z-30 flex items-center justify-between bg-white/80 px-4 py-3 shadow-sm backdrop-blur lg:hidden">
-        <BrandLogo compact />
+        <BrandLogo compact sharedLayout={false} />
         <button onClick={() => setOpen(true)} aria-label="Menu"><Menu /></button>
       </div>
       <AnimatePresence>

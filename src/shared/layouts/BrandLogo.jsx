@@ -2,13 +2,13 @@ import { motion } from 'framer-motion'
 import emblem from '../../assets/images/logo-emblem.webp'
 import { useIntro } from '../../modules/intro/IntroContext'
 
-export default function BrandLogo({ dark = false, compact = false }) {
+export default function BrandLogo({ dark = false, compact = false, sharedLayout = true }) {
   const { introDone } = useIntro()
   return (
     <span className="flex items-center gap-3">
       {introDone ? (
         <motion.span
-          layoutId="brand-logo"
+          layoutId={sharedLayout ? 'brand-logo' : undefined}
           transition={{ type: 'spring', stiffness: 140, damping: 20 }}
           className="block h-10 w-10 overflow-hidden rounded-full bg-white shadow-md ring-2 ring-brand-100"
         >

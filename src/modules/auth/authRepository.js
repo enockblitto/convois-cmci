@@ -49,7 +49,9 @@ const supabaseAuth = {
     return data.session?.user ?? null
   },
   onChange(cb) {
-    const { data } = supabase.auth.onAuthStateChange(() => cb())
+    const { data } = supabase.auth.onAuthStateChange(() => {
+      setTimeout(cb, 0)
+    })
     return () => data.subscription.unsubscribe()
   },
   async signIn(email, password) {
@@ -60,7 +62,10 @@ const supabaseAuth = {
     const { data, error } = await supabase.auth.signUp({
       email: email.trim(),
       password,
-      options: { data: { nom, prenom, telephone } },
+      options: {
+        data: { nom, prenom, telephone },
+        emailRedirectTo: new URL('/connexion', window.location.origin).href,
+      },
     })
     if (error) throw new Error(error.message)
     return { needsConfirmation: !data.session }

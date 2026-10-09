@@ -77,8 +77,13 @@ export function RegisterPage() {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [pending, setPending] = useState(false)
+  const [showPasswords, setShowPasswords] = useState(false)
   if (user) return <Navigate to="/mon-espace" replace />
-  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
+  const set = (k) => (e) => {
+    const value = e.target.value
+    setForm((current) => ({ ...current, [k]: value }))
+  }
+  const passwordsMismatch = form.confirm.length > 0 && form.password !== form.confirm
 
   const submit = async (e) => {
     e.preventDefault()
@@ -111,8 +116,15 @@ export function RegisterPage() {
         <Field label="Nom"><Input required value={form.nom} onChange={set('nom')} /></Field>
         <Field label="Téléphone" className="sm:col-span-2"><Input required type="tel" placeholder="07 00 00 00 00" value={form.telephone} onChange={set('telephone')} /></Field>
         <Field label="Email" className="sm:col-span-2"><Input required type="email" autoComplete="email" value={form.email} onChange={set('email')} /></Field>
-        <Field label="Mot de passe"><Input required type="password" autoComplete="new-password" value={form.password} onChange={set('password')} /></Field>
-        <Field label="Confirmation"><Input required type="password" autoComplete="new-password" value={form.confirm} onChange={set('confirm')} /></Field>
+        <Field label="Mot de passe"><Input required type={showPasswords ? 'text' : 'password'} autoComplete="new-password" value={form.password} onChange={set('password')} /></Field>
+        <Field label="Confirmation"><Input required type={showPasswords ? 'text' : 'password'} autoComplete="new-password" value={form.confirm} onChange={set('confirm')} aria-invalid={passwordsMismatch} aria-describedby="password-match-status" /></Field>
+        <label className="flex items-center gap-2 text-sm text-slate-600 sm:col-span-2">
+          <input type="checkbox" checked={showPasswords} onChange={(e) => setShowPasswords(e.target.checked)} />
+          Afficher les mots de passe
+        </label>
+        <p id="password-match-status" aria-live="polite" className={`text-sm sm:col-span-2 ${passwordsMismatch ? 'text-red-700' : form.confirm ? 'text-green-700' : 'text-slate-500'}`}>
+          {passwordsMismatch ? 'Les deux champs sont différents. Vérifiez les majuscules, espaces et caractères saisis.' : form.confirm ? 'Les deux mots de passe correspondent.' : 'Saisissez le même mot de passe dans les deux champs.'}
+        </p>
         <div className="sm:col-span-2"><ErrorBox error={error} /></div>
         <Button type="submit" loading={loading} size="lg" className="sm:col-span-2">Créer mon compte</Button>
       </form>
